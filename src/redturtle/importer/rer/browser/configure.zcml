@@ -1,0 +1,43 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="redturtle.importer.rer">
+
+  <!-- Publish static files -->
+  <plone:static
+      name="redturtle.importer.rer"
+      type="plone"
+      directory="static"
+      />
+
+  <!-- Importer configuration -->
+  <include package="collective.transmogrifier" file="meta.zcml" />
+  <include package="z3c.unconfigure" file="meta.zcml" />
+
+  <include package="transmogrify.dexterity" file="converters.zcml" />
+  <unconfigure>
+    <adapter factory="transmogrify.dexterity.converters.DatetimeDeserializer" />
+  </unconfigure>
+
+  <utility
+    component=".rer_custom_mapping.RERCustomMapping"
+    name="redturtle.importer.rer.rercustommapping"
+    />
+
+  <adapter factory=".converters.MasterSelectDeserializer" />
+
+  <transmogrifier:registerConfig
+    name="rer.plone5.main"
+    title="Migration configuration for querying the catalog of a Plone site"
+    configuration="rerplone5.cfg"
+    />
+
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="rer_migration_main"
+    class=".migrations.RERPlone5MigrationMain"
+    permission="cmf.ManagePortal"
+    />
+
+</configure>
