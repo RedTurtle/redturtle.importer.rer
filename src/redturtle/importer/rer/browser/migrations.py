@@ -17,9 +17,6 @@ class RERPlone5MigrationMain(BrowserView):
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
 
-        import pdb
-        pdb.set_trace()
-
         portal = api.portal.get()
         transmogrifier = Transmogrifier(portal)
         transmogrifier('rer.plone5.main')

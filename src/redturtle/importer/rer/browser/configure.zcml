@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:transmogrifier="http://namespaces.plone.org/transmogrifier"
     i18n_domain="redturtle.importer.rer">
 
   <!-- Publish static files -->
@@ -25,7 +26,20 @@
     name="redturtle.importer.rer.rercustommapping"
     />
 
-  <adapter factory=".converters.MasterSelectDeserializer" />
+  <utility
+      component=".rer_collection_mapping.RERCollectionMapping"
+      name="rer.plone5.migration.sections.rercollectionmapping"
+   />
+
+ <utility
+    component=".rer_custom_constructor.RERCustomBeforeConstructor"
+    name="rer.plone5.migration.sections.rercustombeforeconstructor"
+  />
+
+  <utility
+     component=".rer_custom_constructor.RERCustomAfterConstructor"
+     name="rer.plone5.migration.sections.rercustomafterconstructor"
+   />
 
   <transmogrifier:registerConfig
     name="rer.plone5.main"

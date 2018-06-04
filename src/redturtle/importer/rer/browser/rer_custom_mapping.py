@@ -21,9 +21,6 @@ class RERCustomMapping(object):
     classProvides(ISectionBlueprint)
 
     def __init__(self, transmogrifier, name, options, previous):
-        import pdb
-        pdb.set_trace()
-
         self.transmogrifier = transmogrifier
         self.name = name
         self.options = options
@@ -56,10 +53,10 @@ class RERCustomMapping(object):
             path = item[pathkey]
 
             # RER migrate just published
-            if item.get('_workflow_history'):
-                states = item['_workflow_history'].values()
-                if states[0][-1]['review_state'] == 'private':
-                    continue
+            # if item.get('_workflow_history'):
+            #     states = item['_workflow_history'].values()
+            #     if states[0][-1]['review_state'] == 'private':
+            #         continue
             if item[typekey] == 'RERSubsite':
                 item[typekey] = 'RERSubsite'
                 item['subsite_color'] = item['subsiteColor']
