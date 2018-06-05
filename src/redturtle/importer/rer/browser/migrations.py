@@ -1,22 +1,28 @@
 # -*- coding: utf-8 -*-
+from AccessControl import Unauthorized
 from collective.transmogrifier.transmogrifier import Transmogrifier
 from plone import api
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.utils import iterSchemata
-from plone.protect.interfaces import IDisableCSRFProtection
-from Products.Five.browser import BrowserView
 from redturtle.importer.base import logger
+from redturtle.importer.base.browser.migrations import RedTurtlePlone5MigrationMain  # noqa
 from transmogrify.dexterity.interfaces import IDeserializer
 from zope.event import notify
-from zope.interface import alsoProvides
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.schema import getFieldsInOrder
 
 
-class RERPlone5MigrationMain(BrowserView):
-    def __call__(self):
-        alsoProvides(self.request, IDisableCSRFProtection)
+class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
 
+    def do_migrate(self, REQUEST=None):
+        authenticator = api.content.get_view(
+            context=api.portal.get(),
+            request=self.request,
+            name=u'authenticator')
+        if not authenticator.verify():
+            raise Unauthorized
+
+        self.cleanup_log_files()
         portal = api.portal.get()
         transmogrifier = Transmogrifier(portal)
         transmogrifier('rer.plone5.main')
@@ -41,4 +47,10 @@ class RERPlone5MigrationMain(BrowserView):
                         field.set(field.interface(obj), value)
                         notify(ObjectModifiedEvent(obj))
 
-        return 'DONE.'
+        api.portal.show_message(
+            message='Migration done. Check logs for a complete report.',
+            request=self.request
+        )
+        return self.request.response.redirect(
+            '{0}/migration-results'.format(api.portal.get().absolute_url())
+        )

@@ -49,9 +49,10 @@
 
   <browser:page
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="rer_migration_main"
+    name="rer-data-migration"
     class=".migrations.RERPlone5MigrationMain"
     permission="cmf.ManagePortal"
+    template="templates/migration.pt"
     />
 
 </configure>
