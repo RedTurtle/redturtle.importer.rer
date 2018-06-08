@@ -182,12 +182,12 @@ class RERCustomMapping(object):
                 continue
             elif item[typekey] == 'PoiIssue':
                 continue
-            # elif item[typekey] == 'ERNews':
-            #     continue
-            # elif item[typekey] == 'News Item':
-            #    continue
-            # elif item[typekey] == 'ERNewsExternal':
-            #     continue
+            elif item[typekey] == 'ERNews':
+                continue
+            elif item[typekey] == 'News Item':
+                continue
+            elif item[typekey] == 'ERNewsExternal':
+                continue
             elif item[typekey] == 'ERPortletPage':
                 continue
             elif item[typekey] == 'RERAssessore':
