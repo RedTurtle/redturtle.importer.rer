@@ -208,5 +208,7 @@ class RERCustomMapping(object):
                 continue
             elif item[typekey] == 'SimpleVocabulary':
                 continue
+            elif item[typekey] == 'Event':
+                continue
 
             yield item
