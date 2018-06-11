@@ -52,11 +52,9 @@ class RERCustomMapping(object):
                 continue
             path = item[pathkey]
 
-            # RER migrate just published
-            # if item.get('_workflow_history'):
-            #     states = item['_workflow_history'].values()
-            #     if states[0][-1]['review_state'] == 'private':
-            #         continue
+            # not private content
+            if item['is_private']:
+                continue
             if item[typekey] == 'RERSubsite':
                 item[typekey] = 'RERSubsite'
                 item['subsite_color'] = item['subsiteColor']
