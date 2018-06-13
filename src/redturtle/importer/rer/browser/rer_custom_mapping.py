@@ -83,6 +83,9 @@ class RERCustomMapping(object):
                 item[typekey] = 'WildcardVideo'
                 item['retrieve_thumb'] = True
                 item['video_url'] = item['remoteUrl']
+
+                # TODO : fix video_url
+
                 item['transcript'] = item['text']  # ???
                 yield item
                 continue

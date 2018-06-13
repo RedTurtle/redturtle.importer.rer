@@ -20,6 +20,7 @@ except Exception:
 
 import base64
 import os
+import re
 import urllib2
 
 
@@ -136,6 +137,22 @@ class RERCustomAfterConstructor(ConstructorSection):
             if not obj:
                 yield item
                 continue
+
+            # fix sull'oggetto appena creato
+            if getattr(obj, 'text', None):
+                raw_text = obj.text.raw
+                if '@@download' not in raw_text:
+                    continue
+                if '@@download' in raw_text:
+                    fixed_text = re.sub(r'(/@@download/.*?)"', r'"', raw_text)
+                    setattr(
+                        obj,
+                        'text',
+                        RichTextValue(
+                            raw=fixed_text,
+                            outputMimeType='text/x-html-safe',
+                            mimeType=u'text/html')
+                    )
 
             if type_ == 'Folder':
                 if not IRERSubsiteEnabled.providedBy(obj):
