@@ -32,8 +32,7 @@ class RERCustomBeforeConstructor(ConstructorSection):
         if 'resolveuid' not in text:
             return text
         if 'at_download' in text:
-            text = text.replace('at_download/file', '@@download/file')
-#           print "Fixed %s" % brain.getPath()
+            text = text.replace('at_download/file', '')
         return text
 
     def fix_image_url_in_tiny(self, text):
@@ -63,10 +62,10 @@ class RERCustomBeforeConstructor(ConstructorSection):
                 continue
             type_, path = item[typekey], item[pathkey]
 
-            # is_rer_subsite = False
+            item['is_rer_subsite'] = False
             if type_ == 'RERSubsite':
                 type_ = 'Folder'
-                # is_rer_subsite = True
+                item['is_rer_subsite'] = True
 
             # delete default view from this migrate object
             if type_ == 'BulletinBoard' \
@@ -154,7 +153,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                             mimeType=u'text/html')
                     )
 
-            if type_ == 'Folder':
+            if type_ == 'Folder' and item['is_rer_subsite']:
                 if not IRERSubsiteEnabled.providedBy(obj):
                     alsoProvides(obj, IRERSubsiteEnabled)
                     obj.reindexObject(idxs=['object_provides'])
