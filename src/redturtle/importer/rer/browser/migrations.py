@@ -6,7 +6,9 @@ from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.utils import iterSchemata
 from redturtle.importer.base import logger
 from redturtle.importer.base.browser.migrations import RedTurtlePlone5MigrationMain  # noqa
+from rer.linknormativa.base.interfaces import INormativaType
 from transmogrify.dexterity.interfaces import IDeserializer
+from zope.component import getAdapter
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.schema import getFieldsInOrder
@@ -51,6 +53,32 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             message='Migration done. Check logs for a complete report.',
             request=self.request
         )
+
+        # run scripts after migration
+        self.scripts_post_migration()
+
         return self.request.response.redirect(
             '{0}/migration-results'.format(api.portal.get().absolute_url())
         )
+
+    def scripts_post_migration(self):
+        self.fix_linkNormativa()
+
+    def fix_linkNormativa(self):
+        brains = api.content.find(portal_type='LinkNormativa')
+        print 'Found {0} items.'.format(len(brains))
+        for brain in brains:
+            normativa = brain.getObject()
+            adapter = getAdapter(
+                normativa,
+                INormativaType,
+                getattr(normativa, 'lawType', '')
+            )
+            normativa_url = adapter.createNormativaLink(
+                normativa.effective_date,
+                getattr(normativa, 'lawNumber', '')
+            )
+
+            setattr(normativa, 'remoteUrl', normativa_url)
+
+            logger.warn('Fixed {0}'.format(normativa.absolute_url()))

@@ -20,6 +20,7 @@ except Exception:
 
 import base64
 import os
+import re
 import urllib2
 
 
@@ -31,8 +32,7 @@ class RERCustomBeforeConstructor(ConstructorSection):
         if 'resolveuid' not in text:
             return text
         if 'at_download' in text:
-            text = text.replace('at_download/file', '@@download/file')
-#           print "Fixed %s" % brain.getPath()
+            text = text.replace('at_download/file', '')
         return text
 
     def fix_image_url_in_tiny(self, text):
@@ -62,10 +62,10 @@ class RERCustomBeforeConstructor(ConstructorSection):
                 continue
             type_, path = item[typekey], item[pathkey]
 
-            # is_rer_subsite = False
+            item['is_rer_subsite'] = False
             if type_ == 'RERSubsite':
                 type_ = 'Folder'
-                # is_rer_subsite = True
+                item['is_rer_subsite'] = True
 
             # delete default view from this migrate object
             if type_ == 'BulletinBoard' \
@@ -137,7 +137,23 @@ class RERCustomAfterConstructor(ConstructorSection):
                 yield item
                 continue
 
-            if type_ == 'Folder':
+            # fix sull'oggetto appena creato
+            if getattr(obj, 'text', None):
+                raw_text = obj.text.raw
+                if '@@download' not in raw_text:
+                    continue
+                if '@@download' in raw_text:
+                    fixed_text = re.sub(r'(/@@download/.*?)"', r'"', raw_text)
+                    setattr(
+                        obj,
+                        'text',
+                        RichTextValue(
+                            raw=fixed_text,
+                            outputMimeType='text/x-html-safe',
+                            mimeType=u'text/html')
+                    )
+
+            if type_ == 'Folder' and item['is_rer_subsite']:
                 if not IRERSubsiteEnabled.providedBy(obj):
                     alsoProvides(obj, IRERSubsiteEnabled)
                     obj.reindexObject(idxs=['object_provides'])
