@@ -137,11 +137,8 @@ class RERCustomAfterConstructor(ConstructorSection):
                 yield item
                 continue
 
-            # fix sull'oggetto appena creato
             if getattr(obj, 'text', None):
                 raw_text = obj.text.raw
-                if '@@download' not in raw_text:
-                    continue
                 if '@@download' in raw_text:
                     fixed_text = re.sub(r'(/@@download/.*?)"', r'"', raw_text)
                     setattr(
