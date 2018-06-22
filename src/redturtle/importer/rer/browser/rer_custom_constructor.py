@@ -32,7 +32,7 @@ class RERCustomBeforeConstructor(ConstructorSection):
         if 'resolveuid' not in text:
             return text
         if 'at_download' in text:
-            text = text.replace('at_download/file', '')
+            text = text.replace('at_download/file', '@@download/file')
         return text
 
     def fix_image_url_in_tiny(self, text):
