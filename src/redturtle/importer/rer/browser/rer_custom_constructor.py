@@ -65,6 +65,7 @@ class RERCustomBeforeConstructor(ConstructorSection):
             item['is_rer_subsite'] = False
             if type_ == 'RERSubsite':
                 type_ = 'Folder'
+                item[typekey] = 'Folder'
                 item['is_rer_subsite'] = True
 
             # delete default view from this migrate object
