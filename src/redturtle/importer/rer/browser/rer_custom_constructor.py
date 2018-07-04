@@ -62,6 +62,11 @@ class RERCustomBeforeConstructor(ConstructorSection):
                 continue
             type_, path = item[typekey], item[pathkey]
 
+            # delete folder default view
+            if type_ == 'Folder':
+                if item.get('_layout', None):
+                    del item['_layout']
+
             item['is_rer_subsite'] = False
             if type_ == 'RERSubsite':
                 type_ = 'Folder'
@@ -127,6 +132,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                 logger.warn('Not enough info for item: {0}'.format(item))
                 yield item
                 continue
+
             type_, path = item[typekey], item[pathkey]
 
             obj = self.context.unrestrictedTraverse(
@@ -151,22 +157,23 @@ class RERCustomAfterConstructor(ConstructorSection):
                             mimeType=u'text/html')
                     )
 
-            if type_ == 'Folder' and item['is_rer_subsite']:
-                if not IRERSubsiteEnabled.providedBy(obj):
-                    alsoProvides(obj, IRERSubsiteEnabled)
-                    obj.reindexObject(idxs=['object_provides'])
-                    obj.subsite_color = item.get('subsite_color', None)
-
-                    if item.get('_datafield_image', None):
-                        image_params = item['_datafield_image']
-                        image_data = urllib2.urlopen(
-                            image_params['data_uri']
-                        ).read()
-                        obj.image = namedfile.NamedBlobImage(
-                            image_data,
-                            contentType=image_params['content_type'],
-                            filename=image_params['filename']
-                        )
+            # da scommentare in caso di migrazione di subsite
+            # if type_ == 'Folder' and item['is_rer_subsite']:
+            #     if not IRERSubsiteEnabled.providedBy(obj):
+            #         alsoProvides(obj, IRERSubsiteEnabled)
+            #         obj.reindexObject(idxs=['object_provides'])
+            #         obj.subsite_color = item.get('subsite_color', None)
+            #
+            #         if item.get('_datafield_image', None):
+            #             image_params = item['_datafield_image']
+            #             image_data = urllib2.urlopen(
+            #                 image_params['data_uri']
+            #             ).read()
+            #             obj.image = namedfile.NamedBlobImage(
+            #                 image_data,
+            #                 contentType=image_params['content_type'],
+            #                 filename=image_params['filename']
+            #             )
 
             if type_ == 'SchedaER':
                 links_info = [

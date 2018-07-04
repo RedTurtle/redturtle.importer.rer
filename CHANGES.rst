@@ -5,7 +5,9 @@ Changelog
 1.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix convertion of RERSubsite in folder
+- Resetted default view for Folder content types
+  [eikichi18]
 
 
 1.0a2 (2018-07-03)
