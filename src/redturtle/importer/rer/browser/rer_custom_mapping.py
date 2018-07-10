@@ -53,7 +53,7 @@ class RERCustomMapping(object):
             path = item[pathkey]
 
             # not private content
-            if item['is_private']:
+            if item.get('is_private', None):
                 continue
             if item[typekey] == 'RERSubsite':
                 item[typekey] = 'RERSubsite'
@@ -63,6 +63,14 @@ class RERCustomMapping(object):
                 yield item
                 continue
             elif item[typekey] == 'Folder Deepening':
+                item[typekey] = 'Folder'
+                yield item
+                continue
+            elif item[typekey] == 'RERAreaTematica':
+                item[typekey] = 'Folder'
+                yield item
+                continue
+            elif item[typekey] == 'RERLinksFolder':
                 item[typekey] = 'Folder'
                 yield item
                 continue
