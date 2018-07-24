@@ -67,12 +67,14 @@ class RERCustomMapping(object):
                 yield item
                 continue
             elif item[typekey] == 'RERAreaTematica':
-                item[typekey] = 'Folder'
-                yield item
+                # item[typekey] = 'Folder'
+                # yield item
                 continue
             elif item[typekey] == 'RERLinksFolder':
-                item[typekey] = 'Folder'
-                yield item
+                # item[typekey] = 'Folder'
+                # yield item
+                continue
+            elif item[typekey] == 'GeoLocation':
                 continue
             elif item[typekey] == 'Structured Document':
                 item[typekey] = 'Folder'
