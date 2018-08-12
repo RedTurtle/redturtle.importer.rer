@@ -5,7 +5,8 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add regexp to remove at_download links in text fields
+  [cekk]
 
 
 1.0a3 (2018-07-19)
