@@ -13,6 +13,32 @@ from zope.interface import implementer
 
 import copy
 
+SKIP_TYPES = [
+    'Aforisma',
+    'AreaReferenti',
+    'ChiediEsperto',
+    'Corso',
+    'ERNews',
+    'ERNewsExternal',
+    'ERPortletPage',
+    'Event',
+    'Materia',
+    'News Item',
+    'PloneBoard',
+    'PlonePopoli',
+    'PoiIssue',
+    'PoiTracker',
+    'RERAssessore',
+    'SimpleVocabulary',
+    'SimpleVocabularyTerm',
+    'Sub Survey',
+    'Survey Matrix Question',
+    'Survey Select Question',
+    'Survey Text Question',
+    'Survey',
+    'VocabularyLibrary',
+]
+
 
 @implementer(ISection)
 class RERCustomMapping(object):
@@ -51,7 +77,6 @@ class RERCustomMapping(object):
                 yield item
                 continue
             path = item[pathkey]
-
             # not private content
             if item.get('is_private', None):
                 continue
@@ -174,52 +199,7 @@ class RERCustomMapping(object):
                     item[typekey] = 'BookCrossing'
                     yield item
                     continue
-
-            elif item[typekey] == 'Aforisma':
-                continue
-            elif item[typekey] == 'Materia':
-                continue
-            elif item[typekey] == 'PlonePopoli':
-                continue
-            elif item[typekey] == 'AreaReferenti':
-                continue
-            elif item[typekey] == 'Corso':
-                continue
-            elif item[typekey] == 'ChiediEsperto':
-                continue
-            elif item[typekey] == 'PloneBoard':
-                continue
-            elif item[typekey] == 'PoiTracker':
-                continue
-            elif item[typekey] == 'PoiIssue':
-                continue
-            elif item[typekey] == 'ERNews':
-                continue
-            elif item[typekey] == 'News Item':
-                continue
-            elif item[typekey] == 'ERNewsExternal':
-                continue
-            elif item[typekey] == 'ERPortletPage':
-                continue
-            elif item[typekey] == 'RERAssessore':
-                continue
-            elif item[typekey] == 'Sub Survey':
-                continue
-            elif item[typekey] == 'Survey':
-                continue
-            elif item[typekey] == 'Survey Select Question':
-                continue
-            elif item[typekey] == 'Survey Matrix Question':
-                continue
-            elif item[typekey] == 'Survey Text Question':
-                continue
-            elif item[typekey] == 'VocabularyLibrary':
-                continue
-            elif item[typekey] == 'SimpleVocabularyTerm':
-                continue
-            elif item[typekey] == 'SimpleVocabulary':
-                continue
-            elif item[typekey] == 'Event':
+            elif item[typekey] in SKIP_TYPES:
                 continue
 
             yield item

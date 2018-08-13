@@ -143,7 +143,6 @@ class RERCustomAfterConstructor(ConstructorSection):
             if not obj:
                 yield item
                 continue
-
             if getattr(obj, 'text', None):
                 raw_text = obj.text.raw
                 if '@@download' in raw_text:
