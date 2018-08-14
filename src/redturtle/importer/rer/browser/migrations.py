@@ -35,6 +35,8 @@ def _domain_fix(url):
 
 
 class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
+    
+    transmogrifier_conf = 'rer.plone5.main'
 
     def scripts_post_migration(self):
         super(RERPlone5MigrationMain, self).scripts_post_migration()
