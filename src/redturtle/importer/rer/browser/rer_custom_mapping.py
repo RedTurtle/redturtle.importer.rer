@@ -91,6 +91,10 @@ class RERCustomMapping(object):
                 item[typekey] = 'Folder'
                 yield item
                 continue
+            elif item[typekey] == 'FolderTaxonomy':
+                item[typekey] = 'Folder'
+                yield item
+                continue
             elif item[typekey] == 'RERAreaTematica':
                 # item[typekey] = 'Folder'
                 # yield item

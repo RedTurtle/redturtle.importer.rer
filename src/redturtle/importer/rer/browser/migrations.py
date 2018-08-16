@@ -1,18 +1,10 @@
 # -*- coding: utf-8 -*-
-from AccessControl import Unauthorized
-from collective.transmogrifier.transmogrifier import Transmogrifier
 from plone import api
-from plone.app.uuid.utils import uuidToObject
-from plone.dexterity.utils import iterSchemata
 from redturtle.importer.base import logger
 from redturtle.importer.base.browser.migrations import RedTurtlePlone5MigrationMain  # noqa
 from rer.linknormativa.base.interfaces import INormativaType
-from transmogrify.dexterity.interfaces import IDeserializer
 from urlparse import urlparse
 from zope.component import getAdapter
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-from zope.schema import getFieldsInOrder
 
 import transaction
 
@@ -35,13 +27,24 @@ def _domain_fix(url):
 
 
 class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
-    
+
     transmogrifier_conf = 'rer.plone5.main'
 
     def scripts_post_migration(self):
         super(RERPlone5MigrationMain, self).scripts_post_migration()
         self.fix_linkNormativa()
         self.fix_multipler_video_link()
+        self.fix_taxonomies()
+
+    def fix_taxonomies(self):
+        pc = api.portal.get_tool('portal_catalog')
+        values = pc.uniqueValuesFor('taxonomies')
+        api.portal.set_registry_record(
+            'rt.categorysupport.browser.settings.ITaxonomySettingsSchema.category_list',  # noqa
+            [x for x in values]
+        )
+
+        logger.warn(u'Updated registry record for taxonomy')
 
     def fix_linkNormativa(self):
         brains = api.content.find(portal_type='LinkNormativa')
