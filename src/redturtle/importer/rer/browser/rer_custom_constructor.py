@@ -226,9 +226,10 @@ class RERCustomAfterConstructor(ConstructorSection):
                     obj.publicationDate = DateTime(
                         item['publicationDate']
                     ).asdatetime()
+                auth = item.get('_auth_info')
                 if item.get('_datafield_image', None):
                     image_params = item['_datafield_image']
-                    image_data = self.get_file_data(image_params)
+                    image_data = self.get_file_data(image_params, auth)
                     obj.image = namedfile.NamedBlobImage(
                         image_data,
                         contentType=image_params['content_type'],
@@ -236,7 +237,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                     )
                 if item.get('_datafield_file', None):
                     file_params = item['_datafield_file']
-                    file_data = self.get_file_data(file_params)
+                    file_data = self.get_file_data(file_params, auth)
                     obj.publicationFile = namedfile.NamedBlobFile(
                         file_data,
                         filename=file_params['filename']
@@ -277,16 +278,13 @@ class RERCustomAfterConstructor(ConstructorSection):
 
             yield item
 
-    def get_file_data(self, value):
+    def get_file_data(self, value, auth):
         if 'data' in value:
             return base64.b64decode(value['data'])
         else:
             resp = requests.get(
                 value['data_uri'],
-                auth={
-                    'username': self.remote_username,
-                    'password': self.remote_password
-                }
+                auth=auth
             )
             if resp.ok:
                 return resp.content
