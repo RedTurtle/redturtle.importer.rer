@@ -21,6 +21,7 @@ except Exception:
 import base64
 import os
 import re
+import requests
 import urllib2
 
 
@@ -133,7 +134,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                 yield item
                 continue
 
-            type_, path = item[typekey], item[pathkey]
+            type_, path = item[typekey], item[pathkey]  # noqa
 
             obj = self.context.unrestrictedTraverse(
                 str(item[pathkey]).lstrip('/'),
@@ -227,9 +228,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                     ).asdatetime()
                 if item.get('_datafield_image', None):
                     image_params = item['_datafield_image']
-                    image_data = urllib2.urlopen(
-                        image_params['data_uri']
-                    ).read()
+                    image_data = self.get_file_data(image_params)
                     obj.image = namedfile.NamedBlobImage(
                         image_data,
                         contentType=image_params['content_type'],
@@ -237,9 +236,7 @@ class RERCustomAfterConstructor(ConstructorSection):
                     )
                 if item.get('_datafield_file', None):
                     file_params = item['_datafield_file']
-                    file_data = urllib2.urlopen(
-                        file_params['data_uri']
-                    ).read()
+                    file_data = self.get_file_data(file_params)
                     obj.publicationFile = namedfile.NamedBlobFile(
                         file_data,
                         filename=file_params['filename']
@@ -279,3 +276,20 @@ class RERCustomAfterConstructor(ConstructorSection):
                     )
 
             yield item
+
+    def get_file_data(self, value):
+        if 'data' in value:
+            return base64.b64decode(value['data'])
+        else:
+            resp = requests.get(
+                value['data_uri'],
+                auth={
+                    'username': self.remote_username,
+                    'password': self.remote_password
+                }
+            )
+            if resp.ok:
+                return resp.content
+            else:
+                raise ValueError(
+                    'Response not ok while retrieving the file data. Error: {}'.format(resp.status_code))  # noqa
