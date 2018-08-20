@@ -37,10 +37,22 @@ class RERCustomBeforeConstructor(ConstructorSection):
         return text
 
     def fix_image_url_in_tiny(self, text):
-        for size in ['big', 'newshome', 'maxi', 'custom', 'micro']:
+        image_size_list = [
+            'big',
+            'newshome',
+            'maxi',
+            'custom',
+            'micro',
+            'listing',
+            'icon',
+            'tile',
+            'thumb',
+            'mini',
+            'preview',
+            'large'
+        ]
+        for size in image_size_list:
             if ('/image_{0}'.format(size)) in text:
-                # print "UPDATE: %s (%s) %s" % (brain.getPath(), brain.portal_type, size)
-                # TODO: regexp ?
                 text = text.replace(
                     '/image_{0}'.format(size),
                     '/@@images/image/{0}'.format(size)
