@@ -35,6 +35,7 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
         self.fix_linkNormativa()
         self.fix_multipler_video_link()
         self.fix_taxonomies()
+        self.fix_publication_types()
 
     def fix_taxonomies(self):
         pc = api.portal.get_tool('portal_catalog')
@@ -46,8 +47,19 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             'rt.categorysupport.browser.settings.ITaxonomySettingsSchema.category_list',  # noqa
             [x for x in values]
         )
-
         logger.warn(u'Updated registry record for taxonomy')
+
+    def fix_publication_types(self):
+        pc = api.portal.get_tool('portal_catalog')
+        try:
+            values = pc.uniqueValuesFor('publication_types')
+        except KeyError:
+            return
+        api.portal.set_registry_record(
+            'rer.pubblicazioni.browser.settings.IRerPubblicazioni.tipologia',  # noqa
+            [x for x in values]
+        )
+        logger.warn(u'Updated registry record for publications')
 
     def fix_linkNormativa(self):
         brains = api.content.find(portal_type='LinkNormativa')
