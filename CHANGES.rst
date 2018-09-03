@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0a4 (unreleased)
+1.0a4 (2018-09-03)
 ------------------
 
 - Add regexp to remove at_download links in text fields
