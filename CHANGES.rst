@@ -5,7 +5,8 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed News Item content type from fixed exclude type list in code
+  [eikichi18]
 
 
 1.0a4 (2018-09-03)
