@@ -23,7 +23,6 @@ SKIP_TYPES = [
     'ERPortletPage',
     'Event',
     'Materia',
-    'News Item',
     'PloneBoard',
     'PlonePopoli',
     'PoiIssue',
