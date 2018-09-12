@@ -1,0 +1,10 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="redturtle.importer.rer">
+
+<adapter
+    for="rer.bandi.interfaces.bando.IBando"
+    provides="redturtle.importer.base.interfaces.IMigrationContextSteps"
+    factory=".bando.BandoSteps"
+    />
+</configure>
