@@ -20,4 +20,4 @@ class BandoSteps(object):
             if scadenza_bando.tzinfo:
                 self.context.scadenza_bando = scadenza_bando.replace(
                     tzinfo=None)
-        self.context.reindexObject(idxs=['getScadenza_bando'])
+        # reindexobject bando in the next step
