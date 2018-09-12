@@ -5,6 +5,8 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
+- Add adapter for puntal fix in object bando
+  [cekk]
 - Removed News Item content type from fixed exclude type list in code
   [eikichi18]
 
