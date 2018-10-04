@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0a5 (unreleased)
+1.0.0 (2018-10-04)
 ------------------
 
 - Add adapter for puntal fix in object bando
