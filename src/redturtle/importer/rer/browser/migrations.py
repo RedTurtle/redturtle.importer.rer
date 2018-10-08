@@ -55,8 +55,10 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             values = pc.uniqueValuesFor('publication_types')
         except KeyError:
             return
+        if not values:
+	    return
         api.portal.set_registry_record(
-            'rer.pubblicazioni.browser.settings.IRerPubblicazioni.tipologia',  # noqa
+            'rer.pubblicazioni.browser.settings.IRerPubblicazioniSettings.tipologie',  # noqa
             [x for x in values]
         )
         logger.warn(u'Updated registry record for publications')
