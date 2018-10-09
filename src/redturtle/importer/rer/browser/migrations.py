@@ -43,6 +43,8 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             values = pc.uniqueValuesFor('taxonomies')
         except KeyError:
             return
+        if not values:
+	    return
         api.portal.set_registry_record(
             'rt.categorysupport.browser.settings.ITaxonomySettingsSchema.category_list',  # noqa
             [x for x in values]
@@ -57,9 +59,10 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             return
         if not values:
 	    return
+        text_value = '\n'.join([x for x in values])
         api.portal.set_registry_record(
             'rer.pubblicazioni.browser.settings.IRerPubblicazioniSettings.tipologie',  # noqa
-            [x for x in values]
+            text_value
         )
         logger.warn(u'Updated registry record for publications')
 
