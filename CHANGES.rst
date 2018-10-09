@@ -5,8 +5,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix pubblicazioni registry settings
+  [daniele]
 
 1.0.0 (2018-10-04)
 ------------------
