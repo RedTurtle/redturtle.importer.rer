@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 
 setup(
     name='redturtle.importer.rer',
-    version='1.0.1',
+    version='1.0.2.dev0',
     description="Json importer for plone",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
