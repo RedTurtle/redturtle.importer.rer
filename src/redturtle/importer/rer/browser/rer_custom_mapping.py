@@ -103,6 +103,8 @@ class RERCustomMapping(object):
                 # yield item
                 continue
             elif item[typekey] == 'GeoLocation':
+                item[typekey] = 'Venue'
+                yield item
                 continue
             elif item[typekey] == 'Structured Document':
                 item[typekey] = 'Folder'

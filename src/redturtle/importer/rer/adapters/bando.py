@@ -11,7 +11,7 @@ class BandoSteps(object):
     def __init__(self, context):
         self.context = context
 
-    def doSteps(self):
+    def doSteps(self, item):
         """
         Remove timezone from dates
         """

@@ -2,9 +2,14 @@
     xmlns="http://namespaces.zope.org/zope"
     i18n_domain="redturtle.importer.rer">
 
-<adapter
-    for="rer.bandi.interfaces.bando.IBando"
-    provides="redturtle.importer.base.interfaces.IMigrationContextSteps"
-    factory=".bando.BandoSteps"
-    />
+    <adapter
+      for="rer.bandi.interfaces.bando.IBando"
+      provides="redturtle.importer.base.interfaces.IMigrationContextSteps"
+      factory=".bando.BandoSteps"
+      />
+    <adapter
+      for="collective.venue.interfaces.IVenue"
+      provides="redturtle.importer.base.interfaces.IMigrationContextSteps"
+      factory=".venue.VenueSteps"
+      />
 </configure>
