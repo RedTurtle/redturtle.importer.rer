@@ -199,24 +199,27 @@ class RERCustomAfterConstructor(ConstructorSection):
                     'seeOther'
                 ]
                 for el in links_info:
-                    link_data = ''
                     if item.get(el, ''):
+                        link_data = '<ul>'
                         for line in item.get(el):
                             if line['link'].startswith('http'):
-                                link_data += '<p><ul><li><a href="' \
+                                link_data += '<li><a href="' \
                                     + line['link'] \
                                     + '" data-linktype="external" data-val="' \
                                     + line['link'] + '">' \
                                     + line['title'] \
-                                    + '</a></li></ul></p>'
+                                    + '</a></li>'
                             else:
-                                link_data += '<p><ul><li><a href="../resolveuid/' \
+                                link_data += '<li><a href="../resolveuid/' \
                                     + line['uid'] \
                                     + '" data-linktype="internal" data-val="' \
                                     + line['uid'] \
                                     + '">' \
                                     + line['title'] \
-                                    + '</a></li></ul></p>'
+                                    + '</a></li>'
+                        link_data += '</ul>'
+                        if link_data == '<ul></ul>':
+                            link_data = ''
                         tmp_text = RichTextValue(
                             link_data,
                             'text/html',
