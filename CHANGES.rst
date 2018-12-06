@@ -5,7 +5,8 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add custom skip_types_in_link_check values.
+  [cekk]
 
 
 1.0.3 (2018-10-18)
