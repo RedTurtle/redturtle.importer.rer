@@ -85,16 +85,6 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
 
             logger.warn('Fixed {0}'.format(normativa.absolute_url()))
 
-    def fix_link_noreference(self):
-        brains = api.content.find(portal_type='Link')
-        print 'Found {0} items.'.format(len(brains))
-        for brain in brains:
-            link = brain.getObject()
-            if not link.remoteUrl and not link.internal_link:
-                logger.warn('Removing {0}'.format(link.absolute_url()))
-                api.content.delete(link)
-
-
     def fix_multipler_video_link(self):
         urls_changed = 0  # used for partial commit
         total_urls_changes = 0
