@@ -29,6 +29,10 @@ def _domain_fix(url):
 class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
 
     transmogrifier_conf = 'rer.plone5.main'
+    skip_types_in_link_check = [
+        'BandiIntercenterCollection',
+        'BandoIntercenter',
+        'Discussion Item']
 
     def scripts_post_migration(self):
         super(RERPlone5MigrationMain, self).scripts_post_migration()
@@ -44,7 +48,7 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
         except KeyError:
             return
         if not values:
-	    return
+            return
         api.portal.set_registry_record(
             'rt.categorysupport.browser.settings.ITaxonomySettingsSchema.category_list',  # noqa
             [x for x in values]
@@ -58,7 +62,7 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
         except KeyError:
             return
         if not values:
-	    return
+            return
         text_value = '\n'.join([x for x in values])
         api.portal.set_registry_record(
             'rer.pubblicazioni.browser.settings.IRerPubblicazioniSettings.tipologie',  # noqa
