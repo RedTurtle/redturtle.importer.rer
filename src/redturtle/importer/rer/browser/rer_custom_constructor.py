@@ -291,6 +291,12 @@ class RERCustomAfterConstructor(ConstructorSection):
                         filename=image_params['filename']
                     )
 
+            if type_ == 'Venue':
+                from plone.formwidget.geolocation.geolocation import Geolocation
+                geo = Geolocation(item['latitude'], item['longitude'])
+                setattr(obj,'geolocation', geo)
+            
+
             yield item
 
     def get_file_data(self, value, auth):
