@@ -43,6 +43,7 @@ SKIP_TYPES = [
 class RERCustomMapping(object):
     """Mapping for specific RER content type
     """
+
     classProvides(ISectionBlueprint)
 
     def __init__(self, transmogrifier, name, options, previous):
@@ -58,8 +59,9 @@ class RERCustomMapping(object):
             pathkeys = defaultKeys(options['blueprint'], name, 'path')
         self.pathkey = Matcher(*pathkeys)
 
-        self.typekey = defaultMatcher(options, 'type-key', name, 'type',
-                                      ('portal_type', 'Type'))
+        self.typekey = defaultMatcher(
+            options, 'type-key', name, 'type', ('portal_type', 'Type')
+        )
 
     def __iter__(self):
         for item in self.previous:
@@ -151,8 +153,10 @@ class RERCustomMapping(object):
                 yield item
                 continue
             elif item[typekey] == 'Classified':
-                if not item.get('expiration_date', None) or\
-                        DateTime(item['expiration_date']) < DateTime():
+                if (
+                    not item.get('expiration_date', None)
+                    or DateTime(item['expiration_date']) < DateTime()
+                ):
                     continue
                 else:
                     item[typekey] = 'Advertisement'
@@ -164,15 +168,22 @@ class RERCustomMapping(object):
 
                         additionalImageItem = copy.deepcopy(item)
                         additionalImageItem[typekey] = 'Image'
-                        additionalImageItem['title'] = item['additionalImage']['filename']  # noqa
-                        additionalImageItem['_datafield_image'] = item['_datafield_additionalimage']  # noqa
-                        additionalImageItem[pathkey] += '/' + \
-                            additionalImageItem['title']
+                        additionalImageItem['title'] = item['additionalImage'][
+                            'filename'
+                        ]  # noqa
+                        additionalImageItem['_datafield_image'] = item[
+                            '_datafield_additionalimage'
+                        ]  # noqa
+                        additionalImageItem[pathkey] += (
+                            '/' + additionalImageItem['title']
+                        )
                         additionalImageItem['_layout'] = ''
                         additionalImageItem['id'] = normalizer.normalize(
-                            additionalImageItem['title'])
+                            additionalImageItem['title']
+                        )
                         additionalImageItem['_id'] = normalizer.normalize(
-                            additionalImageItem['title'])
+                            additionalImageItem['title']
+                        )
                         additionalImageItem['_uid'] = None
 
                         if additionalImageItem.get('image', None):
@@ -180,8 +191,11 @@ class RERCustomMapping(object):
                         if additionalImageItem.get('additionalImage', None):
                             del additionalImageItem['additionalImage']
                         if additionalImageItem.get(
-                                '_datafield_additionalimage', None):
-                            del additionalImageItem['_datafield_additionalimage']  # noqa
+                            '_datafield_additionalimage', None
+                        ):
+                            del additionalImageItem[
+                                '_datafield_additionalimage'
+                            ]  # noqa
 
                         yield additionalImageItem
 
@@ -197,13 +211,30 @@ class RERCustomMapping(object):
                 yield item
                 continue
             elif item[typekey] == 'BookcrossingInsertion':
-                if not item.get('expiration_date', None) or\
-                        DateTime(item['expiration_date']) < DateTime():
+                if (
+                    not item.get('expiration_date', None)
+                    or DateTime(item['expiration_date']) < DateTime()
+                ):
                     continue
                 else:
                     item[typekey] = 'BookCrossing'
                     yield item
                     continue
+            elif item[typekey] == 'Link':
+                internal_link = item.get('internal_link', '')
+                external_link = item.get('remoteUrl', '')
+                if internal_link:
+                    item['remoteUrl'] = u'${}/resolveuid/{}'.format(
+                        '{portal_url}', internal_link
+                    )
+                elif external_link:
+                    item['remoteUrl'] = external_link
+                else:
+                    import pdb
+
+                    pdb.set_trace()
+                yield item
+                continue
             elif item[typekey] in SKIP_TYPES:
                 continue
 
