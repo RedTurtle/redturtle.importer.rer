@@ -235,6 +235,8 @@ class RERCustomMapping(object):
                     pdb.set_trace()
                 yield item
                 continue
+            elif item[typekey] == 'BandiIntercenterCollection':
+                 item['text'] = item.get('body', '')
             elif item[typekey] in SKIP_TYPES:
                 continue
 
