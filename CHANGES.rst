@@ -7,7 +7,8 @@ Changelog
 
 - Add custom skip_types_in_link_check values.
   [cekk]
-
+- Add custom mapping for Links.
+  [cekk]
 
 1.0.3 (2018-10-18)
 ------------------
