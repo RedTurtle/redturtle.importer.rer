@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.4 (unreleased)
+1.0.4 (2019-02-08)
 ------------------
 
 - Add custom skip_types_in_link_check values.
