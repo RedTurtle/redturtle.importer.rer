@@ -9,6 +9,13 @@ Changelog
   [cekk]
 - Add custom mapping for Links.
   [cekk]
+- Fix broken links generation.
+  [cekk]
+- Added procedure to remove links without any references after migration.
+  [daniele]
+- Fixed bulleted lists in html links page.
+  [daniele]
+
 
 1.0.3 (2018-10-18)
 ------------------
