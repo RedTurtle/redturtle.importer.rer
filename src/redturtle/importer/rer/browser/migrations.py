@@ -47,7 +47,7 @@ class RERPlone5MigrationMain(RedTurtlePlone5MigrationMain):
             values = pc.uniqueValuesFor('taxonomies')
         except KeyError:
             return
-        if not values:
+        if not any(values):
             return
         api.portal.set_registry_record(
             'rt.categorysupport.browser.settings.ITaxonomySettingsSchema.category_list',  # noqa
