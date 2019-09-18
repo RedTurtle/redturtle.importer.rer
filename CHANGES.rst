@@ -5,7 +5,8 @@ Changelog
 1.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improved check
+  [daniele]
 
 
 1.0.4 (2019-02-08)
